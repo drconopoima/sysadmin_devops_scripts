@@ -25,20 +25,23 @@ PYTHON_PACKAGE_COLLECTION="rh-python${PYTHON_COLLECTION_VERSION}"
 ## Java Variables ##
 ####################
 
-### JRE
 # JAVA_VERSION='java-1.7.0-openjdk'
-# JAVA_VERSION='java-1.8.0-openjdk'
+JAVA_VERSION='java-1.8.0-openjdk'
 # JAVA_VERSION='java-11-openjdk'
 
+## Java Packages: Install JRE in production or JDK for development. Defaults to JDK
+
+## JRE Production
+# JAVA_PACKAGE="${JAVA_VERSION}"
+
 ## JDK Development
-# JAVA_VERSION='java-1.7.0-openjdk-devel'
-JAVA_VERSION='java-1.8.0-openjdk-devel'
-# JAVA_VERSION='java-11-openjdk-devel'
+JAVA_PACKAGE="${JAVA_VERSION}-devel"
 
 ###################
 ## Update CentOS ##
 ###################
 yum update -y
+
 ####################
 ## Manage locales ##
 ####################
@@ -59,15 +62,14 @@ source $SHELL_PROFILE
 ##                                                   JAVA                                                                 ##
 ############################################################################################################################
 
-yum install -y $JAVA_VERSION
+yum install -y $JAVA_PACKAGE
 
 echo -e "\nexport JAVA_HOME='/usr/lib/jvm/${JAVA_VERSION}/'\n" >> $SHELL_PROFILE
 source $SHELL_PROFILE
 
-yum install alternatives
-
 ## Switch between different versions
 
+# yum install alternatives
 # /usr/sbin/alternatives --config java
 
 ############################################################################################################################
