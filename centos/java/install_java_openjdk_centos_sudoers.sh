@@ -1,5 +1,7 @@
 #!/bin/sh
 
+SHELL_PROFILE="$HOME/.bash_profile"
+SHELL_RC="$HOME/.bashrc"
 DESIRED_UTF8_LOCALE='en_US.UTF-8'
 
 ####################
@@ -28,15 +30,15 @@ sudo yum update -y
 ## To list locales
 # locale -a
 ## Other locales 
-## Locale en_US.UTF-8 may be overriden by the configuration of sudo yum. To circumvent this:
+## Locale en_US.UTF-8 may be overriden by the configuration of yum. To circumvent this:
 ## First Delete the line that overrides conf:
-# sed -i.bak '/override_install_langs/d' /etc/sudo yum.conf && \
-## It gets backed up to /etc/sudo yum.conf.bak
+# sed -i.bak '/override_install_langs/d' /etc/yum.conf
+## It gets backed up to /etc/yum.conf.bak
 ## Finally reinstall glibc-common for being able to change the locale
 # sudo yum reinstall glibc-common 
 ## Change LOCALE #
-echo -e "\nexport LC_ALL=$DESIRED_UTF8_LOCALE\nexport LANG=$DESIRED_UTF8_LOCALE\nexport LANGUAGE=$DESIRED_UTF8_LOCALE\n" >> $SHELL_PROFILE
-source $SHELL_PROFILE
+# echo -e "\nexport LC_ALL=$DESIRED_UTF8_LOCALE\nexport LANG=$DESIRED_UTF8_LOCALE\nexport LANGUAGE=$DESIRED_UTF8_LOCALE\n" >> $SHELL_PROFILE
+# source $SHELL_PROFILE
 ############################################################################################################################
 
 sudo yum install -y $JAVA_PACKAGE
@@ -50,4 +52,12 @@ source $SHELL_PROFILE
 
 # /usr/sbin/alternatives --config java
 
-echo "Script execution finished successfully."
+(curl -q -o HelloWorld.java https://introcs.cs.princeton.edu/java/11hello/HelloWorld.java && javac HelloWorld.java && java HelloWorld && rm -rf HelloWorld.java && rm -rf HelloWorld.class)
+JAVATEST=$?
+
+if [ $JAVATEST==0 ]; then
+    echo "Script finished successfully. Java is installed and configured."
+else
+    rm -rf HelloWorld.java
+    echo "Script failed to install Java"
+fi
