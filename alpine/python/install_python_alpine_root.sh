@@ -1,4 +1,5 @@
 #!/bin/bash --init-file
+## Script dependency bash. Install with apk add --no-cache bash
 set -e
 set -x
 
@@ -30,7 +31,7 @@ apk add --no-cache python3
 ##########################################
 ## Install Pyenv-Installer dependencies ##
 ##########################################
-apk add --no-cache --virtual .pyenv-deps git curl bash
+apk add --no-cache --virtual .pyenv-deps git curl
 
 ###################
 ## Install Pyenv ##

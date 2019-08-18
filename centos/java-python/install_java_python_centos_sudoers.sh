@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash --init-file
 # set -e
 set -x
 
