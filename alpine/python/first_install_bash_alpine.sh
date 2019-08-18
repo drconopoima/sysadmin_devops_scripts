@@ -18,5 +18,5 @@ COMPANION_FILE='./install_python_alpine_root.sh'
 if test -f "$COMPANION_FILE"; then
     /bin/bash -i ./install_python_alpine_root.sh
 else
-    wget -qo- https://raw.githubusercontent.com/drconopoima/sysadmin_devops_scripts/master/alpine/python/install_python_alpine_root.sh | /bin/bash -i
+    wget -qO- https://raw.githubusercontent.com/drconopoima/sysadmin_devops_scripts/master/alpine/python/install_python_alpine_root.sh | /bin/bash -i
 fi
