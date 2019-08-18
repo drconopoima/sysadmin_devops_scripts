@@ -5,7 +5,7 @@
 ### General Variables ###
 
 SHELL_PROFILE="$HOME/.profile"
-NUMBER_OF_THREADS=8
+PYTHON_LOCAL_SCRIPTS="$HOME/.local/bin"
 
 ### Python Variables ###
 
@@ -31,11 +31,6 @@ apk add --no-cache $PYTHON_COMMAND
 ##########################################
 apk add --no-cache --virtual .pyenv-deps git curl
 
-echo -e '\nexport PATH="$HOME/.pyenv/bin:$PATH"\neval "$(pyenv init -)"\neval "$(pyenv virtualenv-init -)"\n' >> $SHELL_PROFILE
-PATH="$HOME/.pyenv/bin:$PATH"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
-
 ## Install Python build dependencies
 apk add --no-cache --virtual .build-deps bzip2-dev coreutils dpkg-dev dpkg expat-dev findutils gcc gdbm-dev libc-dev libffi-dev libnsl-dev libtirpc-dev linux-headers make ncurses-dev openssl openssl-dev pax-utils readline-dev sqlite-dev tcl-dev tk tk-dev util-linux-dev xz-dev zlib-dev
 
@@ -44,11 +39,16 @@ apk add --no-cache --virtual .build-deps bzip2-dev coreutils dpkg-dev dpkg expat
 ###################
 curl -o- https://pyenv.run | bash
 
+echo -e 'export PATH="$HOME/.pyenv/bin:$PATH"\neval "$(pyenv init -)"\neval "$(pyenv virtualenv-init -)"\n' >> $SHELL_PROFILE
+
 ## Install Pipenv
 $PYTHON_COMMAND -m pip install --upgrade --user pipenv
 
 ## Install Poetry
 $PYTHON_COMMAND -m pip install --upgrade --user poetry
+
+echo -e "export PATH=$PYTHON_LOCAL_SCRIPTS:'\$PATH'\n" >> $SHELL_PROFILE
+source $SHELL_PROFILE
 
 ## Install desired Python versions in parallel up to number of threads specified above
 # Based on answer by PSkocik at Stackexchange here: https://unix.stackexchange.com/questions/103920/parallelize-a-bash-for-loop
