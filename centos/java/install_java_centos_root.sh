@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/usr/bin/env bash
+set -e
+set -x
 
 SHELL_PROFILE="$HOME/.bash_profile"
 SHELL_RC="$HOME/.bashrc"

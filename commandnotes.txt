@@ -1,7 +1,11 @@
-﻿# From comparison among two files show side-by-side differences only. “grep” it’s filtering out lines that don’t have contents after the parenthesis “(”. Taken from https://stackoverflow.com/questions/38950802/how-to-display-line-numbers-in-side-by-side-diff-in-unix.
+﻿## From comparison among two files show side-by-side differences only. “grep” it’s filtering out lines that don’t have contents after the parenthesis “(”. Taken from https://stackoverflow.com/questions/38950802/how-to-display-line-numbers-in-side-by-side-diff-in-unix.
 
 sdiff -l file1 file2 | cat -n | grep -v -e '($'
 
 # From comparison among two files show side-by-side similarities only. “grep” it’s filtering out lines that don’t have contents after the parenthesis “|” symbol. Idem
 
 diff -y file1 file2 | cat -n | grep -v -e '($'
+
+## Run Bourne Shell-compatible "bash" scripts in sh (within limitations e.g. not `shopt`)
+## Mainly to avoid busybox embedded systems to install as dependency complete bash shell
+echo -e "#!/usr/bin/env sh\nsh \$@\n" > /usr/bin/bash && chmod a+x /usr/bin/bash

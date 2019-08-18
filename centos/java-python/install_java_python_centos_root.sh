@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/usr/bin/env bash
+# set -e
+set -x
 
 #######################
 ## General Variables ##
@@ -13,7 +15,7 @@ DESIRED_UTF8_LOCALE='en_US.UTF-8'
 ## Python Variables ##
 ######################
 
-DESIRED_PYTHON_VERSIONS='2.7.16 3.4.10 3.5.7 3.6.9 3.7.4'
+DESIRED_PYTHON_VERSIONS='2.7.16 3.5.7 3.6.9 3.7.4'
 
 PYTHON_COLLECTION_VERSION='36'
 # PYTHON_COLLECTION_VERSION='27'
@@ -124,7 +126,7 @@ wait
 (curl -q -o HelloWorld.java https://introcs.cs.princeton.edu/java/11hello/HelloWorld.java && javac HelloWorld.java && java HelloWorld && rm -rf HelloWorld.java && rm -rf HelloWorld.class)
 JAVATEST=$?
 git clone --depth=1 https://github.com/drconopoima/python-helloworld.git
-(cd ./python-helloworld/ && $PYTHON_COMMAND helloworld.py && cd ..)
+(cd ./python-helloworld/ && $PYTHON_COMMAND ./helloworld.py && cd ..)
 PYTHON3SCLTEST=$?
 (cd ./python-helloworld/ && pyenv virtualenv python-helloworld && pyenv activate python-helloworld && python ./helloworld.py && pyenv deactivate && pyenv uninstall -f python-helloworld && cd ..)
 PYENVTEST=$?
@@ -132,6 +134,7 @@ PYENVTEST=$?
 PIPENVTEST=$?
 (cd ./python-helloworld/ && $PYTHON_COMMAND -m poetry install && $PYTHON_COMMAND -m poetry run ./helloworld.py && cd ..)
 POETRYTEST=$?
+rm -rf python-helloworld/
 
 if [ $JAVATEST == 0 -a $PYTHON3SCLTEST == 0 -a $PYENVTEST == 0 -a $PIPENVTEST == 0 -a $POETRYTEST == 0 ]; then
     echo "Script finished successfully. Java and Python (Software collection, Pyenv, Poetry and Pipenv) have been installed and configured."
@@ -140,7 +143,6 @@ else
      rm -rf HelloWorld.java
      echo "Script failed to install Java"
    fi
-   rm -rf python-helloworld/
    if [ $PYTHON3SCLTEST != 0 ]; then
       echo "Script failed to configure Python3 from Centos Software Collection"
    fi
