@@ -10,9 +10,12 @@
 ## Mainly to avoid busybox embedded systems to install as dependency complete bash shell
 # echo -e "#!/usr/bin/env sh\nsh \$@\n" > /usr/bin/bash && chmod a+x /usr/bin/bash
 
-## Generate sequentially numbered files:
+## Generate sequence
 # LOWER_RANGE=0
 # UPPER_RANGE=99
+# INCREMENT=3
+# SEQUENCE=$(seq $LOWER_RANGE $INCREMENT $UPPER_RANGE);
+## Generate sequentially numbered files
 # DIRECTORY='/tmp'
 # EXTENSION='.txt'
-# for number in $(seq $LOWER_RANGE $UPPER_RANGE); do touch ${DIRECTORY}/${number}.${EXTENSION}; done
+# for number in $SEQUENCE do touch ${DIRECTORY}/${number}.${EXTENSION}; done
