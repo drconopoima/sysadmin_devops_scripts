@@ -19,3 +19,6 @@
 # DIRECTORY='/tmp'
 # EXTENSION='.txt'
 # for number in $SEQUENCE do touch ${DIRECTORY}/${number}.${EXTENSION}; done
+
+# To retrieve in CSV a number of df commands in parallel from a number of destinations
+pssh -h hosts -t 0 -p 18 -i "df -h /var/logt | tail -1f | tr -s ' ' | tr ' ' ','" | paste - - | tr -s ' ' | tr ' ' ',' | tr '\t' ','
