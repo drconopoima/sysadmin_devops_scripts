@@ -21,4 +21,4 @@
 # for number in $SEQUENCE do touch ${DIRECTORY}/${number}.${EXTENSION}; done
 
 # To retrieve in CSV a number of df commands in parallel from a number of destinations
-pssh -h hosts -t 0 -p 18 -i "df -h /var/logt | tail -1f | tr -s ' ' | tr ' ' ','" | paste - - | tr -s ' ' | tr ' ' ',' | tr '\t' ',' | sort -t $',' -k3,3
+pssh -h hosts -t 0 -p 18 -i "df -h / | tail -n +2 | tr -s ' ' | tr ' ' ','" | paste - - | tr -s ' ' | tr ' ' ',' | tr '\t' ',' | sort -t $',' -k3
