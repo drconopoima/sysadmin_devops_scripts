@@ -22,3 +22,15 @@
 
 # To retrieve in CSV a number of df commands in parallel from a number of destinations
 pssh -h hosts -t 0 -p 18 -i "df -h / | tail -n +2 | tr -s ' ' | tr ' ' ','" | paste - - | tr -s ' ' | tr ' ' ',' | tr '\t' ',' | sort -t $',' -k3
+
+# 
+
+# Source: https://www.reddit.com/r/commandline/comments/45xxv1/why_find_stat_is_much_slower_than_ls/ 
+# Drop caches for a fair comparison
+# sudo sh -c "/bin/echo 3 > /proc/sys/vm/drop_caches";
+
+## Find does not sort
+# time find . -type d > /dev/null
+## Find faster than ls -AlR
+## Determined as such
+# sudo sh -c "/bin/echo 3 > /proc/sys/vm/drop_caches"; time for i in {1..5}; do find . -type d > /dev/null; done
