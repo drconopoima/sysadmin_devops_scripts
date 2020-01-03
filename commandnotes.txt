@@ -34,3 +34,7 @@ pssh -h hosts -t 0 -p 18 -i "df -h / | tail -n +2 | tr -s ' ' | tr ' ' ','" | pa
 ## Find faster than ls -AlR
 ## Determined as such
 # sudo sh -c "/bin/echo 3 > /proc/sys/vm/drop_caches"; time for i in {1..5}; do find . -type d > /dev/null; done
+
+# Sort process start times:
+## <pid> <iso datetime> <command>
+ps -eo pid,etimes,cmd --sort=etimes | grep "[a]lcohol" | awk 'BEGIN{now=systime()} {$2=strftime("%Y-%m-%d %H:%M:%S", now-$2); print $0}'
