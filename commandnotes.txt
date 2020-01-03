@@ -37,4 +37,5 @@ pssh -h hosts -t 0 -p 18 -i "df -h / | tail -n +2 | tr -s ' ' | tr ' ' ','" | pa
 
 # Sort process start times:
 ## <pid> <iso datetime> <command>
-ps -eo pid,etimes,cmd --sort=etimes | grep "[a]lcohol" | awk 'BEGIN{now=systime()} {$2=strftime("%Y-%m-%d %H:%M:%S", now-$2); print $0}'
+## Sourced from answer by Mikko Rantalainen https://unix.stackexchange.com/a/549504/386719
+ps -eo user,pid,ppid,c,etimes,tty,cmd --sort=etimes | awk 'BEGIN{now=systime()} {$5=strftime("%Y-%m-%d %H:%M:%S", now-$5); print $0}'
