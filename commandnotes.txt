@@ -42,3 +42,6 @@ ps -eo user,pid,ppid,c,etimes,tty,cmd --sort=etimes | awk 'BEGIN{now=systime()} 
 
 # Search packages whose origin isn't ubuntu
 aptitude search "?installed?not(?origin(Ubuntu))" -F%p | xargs --no-run-if-empty apt-cache policy
+
+# List biggest packages of system
+dpkg-query --show --showformat='${Installed-Size}\t${Package}\n' | sort -rh | head -25 | awk '{print $1/1024, $2}'
