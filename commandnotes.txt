@@ -39,3 +39,6 @@ pssh -h hosts -t 0 -p 18 -i "df -h / | tail -n +2 | tr -s ' ' | tr ' ' ','" | pa
 ## <pid> <iso datetime> <command>
 ## Sourced from answer by Mikko Rantalainen https://unix.stackexchange.com/a/549504/386719
 ps -eo user,pid,ppid,c,etimes,tty,cmd --sort=etimes | awk 'BEGIN{now=systime()} {$5=strftime("%Y-%m-%d %H:%M:%S", now-$5); print $0}'
+
+# Search packages whose origin isn't ubuntu
+aptitude search "?installed?not(?origin(Ubuntu))" -F%p | xargs --no-run-if-empty apt-cache policy
