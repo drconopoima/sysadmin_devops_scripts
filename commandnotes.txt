@@ -52,8 +52,8 @@ dpkg --list |grep "^rc" | awk '{ print $2 }' | xargs --no-run-if-empty dpkg --pu
 # Download Java JRE from Adoptium https://adoptium.net/temurin/archive
 VERSION='11'; \
 FILE_NAME="OpenJDK${VERSION}U"; \
-PACKAGE='jre'; # jre or jdk \
-BUILD='x64_linux'; \ # x64_linux, aarch64_linux, arm_linux, x64_mac, aarch64_mac
+PACKAGE='jre'; ${IFS#jre or jdk}; IFS=$' \n\t'; \
+BUILD='x64_linux'; ${IFS# x64_linux, aarch64_linux, arm_linux, x64_mac, aarch64_mac}; IFS=$' \n\t'; \
 VM='hotspot'; \
 TAG="$(curl -s https://api.github.com/repos/adoptium/temurin${VERSION}-binaries/tags | jq '.[0].name' | tr -d '"' | tr -dc 'a-zA-Z0-9.+-')"; \
 TAG_URLENCODED="$(jq -rn --arg x "${TAG}" '$x|@uri')"
@@ -61,4 +61,15 @@ TAG_EXTRACTED_VERSION="$(echo -n "${TAG}" | grep -oP ".{0,0}${VERSION}.*" | tr '
 EXTENSION='.tar.gz'; \
 curl -LOs "https://github.com/adoptium/temurin${VERSION}-binaries/releases/download/${TAG_URLENCODED}/${FILE_NAME}-${PACKAGE}_${BUILD}_${VM}_${TAG_EXTRACTED_VERSION}${EXTENSION}"
 
+
+# Download NodeJS from nodejs.org
+## Have pup installed
+### go install pup@master
+### brew install https://raw.githubusercontent.com/EricChiang/pup/master/pup.rb
+VERSION_MAJOR='12'; \
+VERSION_SHORTCUT="latest-v${VERSION_MAJOR}.x"
+VERSION="$(basename -s ".tar.xz" $(curl -so - https://nodejs.org/dist/${VERSION_SHORTCUT}/ | pup 'body a:last-of-type text{}') | cut -c7-)"; \
+BUILD='linux-x64'; ${IFS#linux-x64, darwin-x64, linux-arm64, linux-armv7l, win-x64, win-x86, x64, x86}; IFS=$' \n\t'; \
+EXTENSION='.tar.gz'; ${IFS#.tar.gz .tar.xz .msi .zip -7z}; IFS=$' \n\t'; \
+curl -LOs "https://nodejs.org/dist/${VERSION_SHORTCUT}/node-v${VERSION}-${BUILD}${EXTENSION}"
 
