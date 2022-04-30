@@ -45,3 +45,20 @@ aptitude search "?installed?not(?origin(Ubuntu))" -F%p | xargs --no-run-if-empty
 
 # List biggest packages of system
 dpkg-query --show --showformat='${Installed-Size}\t${Package}\n' | sort -rh | head -25 | awk '{print $1/1024, $2}'
+
+# Purge configuration files from removed packages
+dpkg --list |grep "^rc" | awk '{ print $2 }' | xargs --no-run-if-empty dpkg --purge
+
+# Download Java JRE from Adoptium https://adoptium.net/temurin/archive
+VERSION='11'; \
+FILE_NAME="OpenJDK${VERSION}U"; \
+PACKAGE='jre'; # jre or jdk \
+BUILD='x64_linux'; \ # x64_linux, aarch64_linux, arm_linux, x64_mac, aarch64_mac
+VM='hotspot'; \
+TAG="$(curl -s https://api.github.com/repos/adoptium/temurin${VERSION}-binaries/tags | jq '.[0].name' | tr -d '"' | tr -dc 'a-zA-Z0-9.+-')"; \
+TAG_URLENCODED="$(jq -rn --arg x "${TAG}" '$x|@uri')"
+TAG_EXTRACTED_VERSION="$(echo -n "${TAG}" | grep -oP ".{0,0}${VERSION}.*" | tr '+' '_')"
+EXTENSION='.tar.gz'; \
+curl -LOs "https://github.com/adoptium/temurin${VERSION}-binaries/releases/download/${TAG_URLENCODED}/${FILE_NAME}-${PACKAGE}_${BUILD}_${VM}_${TAG_EXTRACTED_VERSION}${EXTENSION}"
+
+
