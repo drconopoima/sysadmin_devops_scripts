@@ -73,3 +73,25 @@ BUILD='linux-x64'; ${IFS#linux-x64, darwin-x64, linux-arm64, linux-armv7l, win-x
 EXTENSION='.tar.gz'; ${IFS#.tar.gz .tar.xz .msi .zip -7z}; IFS=$' \n\t'; \
 curl -LOs "https://nodejs.org/dist/${VERSION_SHORTCUT}/node-v${VERSION}-${BUILD}${EXTENSION}"
 
+# Troubleshoot webcam video
+## list usb devices
+lsusb
+## list pci devices
+lspci
+## list kernel modules
+lsmod | grep -i video
+## check /dev/video* permissions/ownership (user root, group video 660)
+sudo ls -lh /dev/video*
+## Add user to group video
+sudo usermod -aG video $USER
+newgrp video
+newgrp $USER
+## Install uvc and dependencies
+sudo apt install --reinstall --install-recommends --install-suggests guvcview
+## Review if kernel module uvcvideo.ko is present
+uname -a
+sudo find /lib/modules/$(uname -r)/ -name "uvcvideo*"
+## ensure uvcvideo.ko isn't blacklisted from loading
+grep -R uvcvideo /etc/modprobe.d/
+## ensure uvcvideo.ko is loaded on startup
+echo "uvcvideo.ko" | sudo tee -a /etc/modules-load.d/modules.conf
