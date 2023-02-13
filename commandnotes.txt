@@ -99,3 +99,5 @@ echo "uvcvideo.ko" | sudo tee -a /etc/modules-load.d/modules.conf
 ## Explore 40 elements from your music library randomly
 find ~/Music -type f \( -name "*.flac" -o -name "*.mp3" \) -a -size +1M -print0 | xargs -0 -r shuf -ezn 40 | xargs -0 -r shuf -ezn 40 | xargs -0 -r -n1 mpv
 ### There could be more than number of arguments accepts in a single command shuf, to not always discard late-rounders a seconds pass through shuf is required to select precisely 40 on the second round. E.g. I can get 120 (3 selections of 40 in my library of thousands) without second pass
+## Safely count files with newlines in the names
+find . -type f -print0 | grep -zc '.*'
