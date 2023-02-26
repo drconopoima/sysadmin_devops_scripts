@@ -101,3 +101,6 @@ find ~/Music -type f \( -name "*.flac" -o -name "*.mp3" \) -a -size +1M -print0 
 ### There could be more than number of arguments accepts in a single command shuf, to not always discard late-rounders a seconds pass through shuf is required to select precisely 40 on the second round. E.g. I can get 120 (3 selections of 40 in my library of thousands) without second pass
 ## Safely count files with newlines in the names
 find . -type f -print0 | grep -zc '.*'
+
+# Stress test maximum heat output
+PTS_CONCURRENT_TEST_RUNS=3 TOTAL_LOOP_TIME=60 phoronix-test-suite stress-run brl-cad vkmark unvanquished
