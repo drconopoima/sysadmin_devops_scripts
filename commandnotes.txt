@@ -108,19 +108,21 @@ PTS_CONCURRENT_TEST_RUNS=3 TOTAL_LOOP_TIME=60 phoronix-test-suite stress-run brl
 # RHCSA 9 practice AlmaLinux 9.2 full virtio
 ## https://www.collabora.com/news-and-blog/blog/2021/11/26/venus-on-qemu-enabling-new-virtual-vulkan-driver/
 ## https://www.youtube.com/watch?v=ud8vgI45RgE
-qemu-system-x86_64                                                \
-    -enable-kvm                                                   \
-    -cpu host                                                     \
-    -smp 6,sockets=1,cores=6,threads=1,maxcpus=6                  \
-    -m 12G                                                        \
-    -M q35                                                        \
-    -boot d -cdrom AlmaLinux-9-latest-x86_64-dvd.iso              \
-    -net nic,model=virtio                                         \
-    -net user,hostfwd=tcp::2222-:22                               \
-    -vga virtio                                                   \
-    -display gtk,gl=on,show-cursor=on                             \
-    -usb -device usb-tablet                                       \
-    -object memory-backend-memfd,id=mem1,size=12G                 \
-    -machine memory-backend=mem1                                  \
+qemu-img create -f qcow2 vulkan.qcow2 21G
+qemu-system-x86_64                                                     \
+    -enable-kvm                                                        \
+    -cpu host                                                          \
+    -smp 6,sockets=1,cores=6,threads=1,maxcpus=6                       \
+    -m 12G                                                             \
+    -M q35                                                             \
+    -boot d -cdrom AlmaLinux-9-latest-x86_64-dvd.iso                   \
+    -net nic,model=virtio                                              \
+    -net user,hostfwd=tcp::2222-:22                                    \
+    -vga virtio                                                        \
+    -display gtk,gl=on,show-cursor=on                                  \
+    -usb -device usb-tablet                                            \
+    -object memory-backend-memfd,id=mem1,size=12G                      \
+    -machine memory-backend=mem1                                       \
+    -drive file=vulkan.qcow2,index=0,media=disk,if=virtio,format=qcow2 \
     -d guest_errors
 
