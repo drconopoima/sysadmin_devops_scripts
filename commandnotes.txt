@@ -126,3 +126,21 @@ qemu-system-x86_64                                                     \
     -drive file=vulkan.qcow2,index=0,media=disk,if=virtio,format=qcow2 \
     -d guest_errors
 
+mkdir -pv ${HOME}/manpages
+# Install groff, e.g. brew install groff each package manager at this source https://command-not-found.com/groff
+for i in $(seq 0 9) n; do
+  >&2 echo -e "\nman${i}\n";
+  if [[ -d /usr/share/man/man${i}/ ]]; then
+  find /usr/share/man/man${i}/ -mindepth 1 -maxdepth 1 -type f -exec basename -a -s".${i}" \{\} \; | \
+    xargs -r basename -a -s".${i}.gz" | xargs -r basename -a -s".${i}p" | xargs -r basename -a -s".${i}p.gz" | xargs -r basename -a -s".${i}m" | xargs -r basename -a -s".${i}m.gz"  | xargs -r basename -a -s".${i}x" | xargs -r basename -a -s".${i}x.gz" | xargs -r basename -a -s".${i}mp" | xargs -r basename -a -s".${i}mp.gz"  | xargs -r basename -a -s".${i}tcl" | xargs -r basename -a -s".${i}tcl.gz" | xargs -r basename -a -s".${i}ssl" | xargs -r basename -a -s".${i}ssl.gz" | xargs -r basename -a -s".${i}3ssl" | xargs -r basename -a -s".${i}3ssl.gz" | xargs -r basename -a -s".${i}3pm" | xargs -r basename -a -s".${i}3pm.gz";
+  fi;
+  for j in p m x mp pm tcl ssl 3ssl head type const; do
+    if [[ -d /usr/share/man/man${i}${j}/ ]]; then
+      >&2 echo -e "\nman${i}${j}\n";
+      find /usr/share/man/man${i}${j}/ -mindepth 1 -maxdepth 1 -type f -exec basename -a -s".${i}" \{\} \; | \
+      xargs -r basename -a -s".${i}.gz" | xargs -r basename -a -s".${i}${j}" | xargs -r basename -a -s".${i}${j}.gz"; 
+    fi; 
+  done | xargs -r basename -a -s".${i}p" | xargs -r basename -a -s".${i}p.gz" | xargs -r basename -a -s".${i}m" | xargs -r basename -a -s".${i}m.gz"  | xargs -r basename -a -s".${i}x" | xargs -r basename -a -s".${i}x.gz" | xargs -r basename -a -s".${i}mp" | xargs -r basename -a -s".${i}mp.gz"  | xargs -r basename -a -s".${i}tcl" | xargs -r basename -a -s".${i}tcl.gz" | xargs -r basename -a -s".${i}ssl" | xargs -r basename -a -s".${i}ssl.gz" | xargs -r basename -a -s".${i}3ssl" | xargs -r basename -a -s".${i}3ssl.gz" | xargs -r basename -a -s".${i}3pm" | xargs -r basename -a -s".${i}3pm.gz";
+done | sort | uniq | tr '\n' ' ' | xargs -r manbook --output ${HOME}/manpages;
+
+
