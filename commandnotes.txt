@@ -64,7 +64,7 @@ curl -LOs "https://github.com/adoptium/temurin${VERSION}-binaries/releases/downl
 
 # Download NodeJS from nodejs.org
 ## Have pup installed
-### go install pup@master
+### go install github.com/ericchiang/pup@master
 ### brew install https://raw.githubusercontent.com/EricChiang/pup/master/pup.rb
 VERSION_MAJOR='12'; \
 VERSION_SHORTCUT="latest-v${VERSION_MAJOR}.x"
