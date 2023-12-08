@@ -125,7 +125,13 @@ qemu-system-x86_64                                                     \
     -machine memory-backend=mem1                                       \
     -drive file=vulkan.qcow2,index=0,media=disk,if=virtio,format=qcow2 \
     -d guest_errors
+### Qemu qcow2 to OVA
+qemu-img convert -p -f qcow2 -O vmdk 20231027-disk001.qcow2 20231027-disk001.vmdk
+### OVA to VMDK/VDI to Qcow2
+tar xvf ./20231027.ova
+qemu-img convert -O qcow2 20231027-disk001.vmdk  20231027-disk001.qcow2
 
+####  Retrieve in HTML files all manpages ####
 mkdir -pv ${HOME}/manpages
 # Install groff, e.g. brew install groff each package manager at this source https://command-not-found.com/groff
 for i in $(seq 0 9) n; do
