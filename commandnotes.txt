@@ -148,3 +148,14 @@ for i in $(seq 0 9) n; do
     fi;
   done | xargs -r basename -a -s".${i}m" | xargs -r basename -a -s".${i}G.gz" | xargs -r basename -a -s".${i}m" | xargs -r basename -a -s".${i}G.gz" | xargs -r basename -a -s".${i}p" | xargs -r basename -a -s".${i}p.gz"  | xargs -r basename -a -s".${i}x" | xargs -r basename -a -s".${i}x.gz" | xargs -r basename -a -s".${i}mp" | xargs -r basename -a -s".${i}mp.gz"  | xargs -r basename -a -s".${i}tcl" | xargs -r basename -a -s".${i}tcl.gz" | xargs -r basename -a -s".${i}ssl" | xargs -r basename -a -s".${i}ssl.gz" | xargs -r basename -a -s".${i}ossl" | xargs -r basename -a -s".${i}ossl.gz" | xargs -r basename -a -s".${i}erl" | xargs -r basename -a -s".${i}erl.gz" | xargs -r basename -a -s".${i}pm" | xargs -r basename -a -s".${i}pm.gz" | xargs -r basename -a -s".${i}am" | xargs -r basename -a -s".${i}am.gz" | xargs -r basename -a -s".${i}form" | xargs -r basename -a -s".${i}form.gz" | xargs -r basename -a -s".${i}menu" | xargs -r basename -a -s".${i}menu.gz" | xargs -r basename -a -s".${i}stap" | xargs -r basename -a -s".${i}stap.gz" | xargs -r basename -a -s".${i}tiff" | xargs -r basename -a -s".${i}tiff.gz" | xargs -r basename -a -s".${i}type" | xargs -r basename -a -s".${i}type.gz" | xargs -r basename -a -s".${i}curses" | xargs -r basename -a -s".${i}curses.gz" | xargs -r basename -a -s".${i}brotli" | xargs -r basename -a -s".${i}brotli.gz" | xargs -r basename -a -s".${i}ncurses" | xargs -r basename -a -s".${i}ncurses.gz";
 done | sort | uniq | tr '\n' ' ' | xargs -r manbook --output ${HOME}/manpages/;
+#### Generate an skeleton Spring Boot directory for a hello world application
+### ERROR Spring Boot compatibility range is >=3.2.0","path":"/starter.tgz"}
+curl https://start.spring.io/starter.tgz     \
+  -d applicationName=HelloApplication        \
+  -d artifactId=demo    -d baseDir=hello     \
+  -d bootVersion=3.2.0  -d dependencies=web,actuator     \
+  -d description='Demo project for Spring Boot'     \
+  -d groupId=com.example     -d javaVersion=17      \
+  -d language=java     -d name=demo     \
+  -d packageName=com.example.demo     -d packaging=jar     \
+  -d type=gradle-project     -d version=0.0.1-SNAPSHOT | tar -xvzf -
