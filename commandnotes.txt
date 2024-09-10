@@ -159,3 +159,25 @@ curl https://start.spring.io/starter.tgz     \
   -d language=java     -d name=demo     \
   -d packageName=com.example.demo     -d packaging=jar     \
   -d type=gradle-project     -d version=0.0.1-SNAPSHOT | tar -xvzf -
+# associate network addresses from /proc/net/fib_trie with interfaces from /proc/net/route:
+# https://unix.stackexchange.com/questions/365225/how-to-get-the-ipv4-address-for-an-interface-from-proc
+awk '/^[^I]/ {print $1 " " $2}' /proc/net/route
+## eth0 00000000
+## eth0 0003F40A
+## eth0 0103F40A
+cat /proc/net/fib_trie | grep "|--"   | egrep -v "0.0.0.0| 127."
+##               |-- 10.244.3.0
+##               |-- 10.244.3.1
+##               |-- 10.244.3.2
+##            |-- 10.244.3.255
+##               |-- 10.244.3.0
+##               |-- 10.244.3.1
+##               |-- 10.244.3.2
+##            |-- 10.244.3.255
+# convert the hexadecimal network addresses with:
+echo 0103F40A | xxd -r -p | hexdump -e '/1 "%u."' | tac -s'.' | sed 's/\.$//'
+## 10.244.3.1
+echo 0003F40A | xxd -r -p | hexdump -e '/1 "%u."' | tac -s'.' | sed 's/\.$//'
+## 10.244.3.0
+grep -v -e local -e ip6 /etc/hosts
+## 10.244.3.2      web
